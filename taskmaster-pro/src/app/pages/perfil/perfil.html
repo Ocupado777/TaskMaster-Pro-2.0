@@ -1,0 +1,58 @@
+<div class="perfil-container">
+  <h2>Perfil de Usuario</h2>
+
+  <div class="perfil-card">
+    <label class="avatar-box" title="Cambiar foto de perfil">
+      <img *ngIf="usuario?.avatar" [src]="usuario.avatar" alt="Avatar de usuario" />
+      <span *ngIf="!usuario?.avatar" class="avatar-icono">+</span>
+      <input type="file" accept="image/*" (change)="seleccionarAvatar($event)" />
+    </label>
+
+    <div class="info-box" *ngIf="usuario">
+      <h3>{{ nombre || 'Sin nombre' }}</h3>
+      <p class="rol-texto">{{ rol }}</p>
+      
+      <div class="campo-detalle">
+        <label>Nombre completo:</label>
+        <input type="text" [(ngModel)]="nombre" />
+      </div>
+
+      <div class="campo-detalle">
+        <label>Correo Electrónico:</label>
+        <input type="email" [(ngModel)]="email" />
+      </div>
+
+      <div class="campo-detalle">
+        <label>Teléfono:</label>
+        <input type="tel" [(ngModel)]="telefono" placeholder="Añade un teléfono" />
+      </div>
+
+      <div class="campo-detalle">
+        <label>Fecha de Ingreso:</label>
+        <p class="fecha-texto">{{ usuario.fechaLogin | date:'medium' }}</p>
+      </div>
+
+      <div class="perfil-acciones"><button (click)="guardarPerfil()" class="btn-guardar">Guardar Cambios</button><button *ngIf="usuario.avatar" (click)="eliminarAvatar()" class="btn-secundario">Quitar foto</button></div>
+    </div>
+
+    <div *ngIf="!usuario" class="mensaje-vacio">
+      <p>No hay una sesión activa detectada. Inicia sesión para ver tu perfil.</p>
+    </div>
+    <div class="actividad-perfil" *ngIf="usuario">
+      <span><strong>{{ totalTareas }}</strong>Tareas creadas</span>
+      <span><strong>{{ tareasCompletadas }}</strong>Completadas</span>
+      <span><strong>{{ porcentajeActividad }}%</strong>Progreso</span>
+    </div>
+  </div>
+
+  <section class="seguridad-card" *ngIf="usuario">
+    <div><p class="eyebrow">Seguridad</p><h3>Actualizar contraseña</h3><p>Protege el acceso a tu espacio de trabajo.</p></div>
+    <div class="password-grid">
+      <input type="password" [(ngModel)]="passwordActual" placeholder="Contraseña actual" />
+      <input type="password" [(ngModel)]="passwordNueva" placeholder="Nueva contraseña" />
+      <input type="password" [(ngModel)]="confirmarPassword" placeholder="Repite la nueva contraseña" />
+      <button type="button" (click)="cambiarPassword()">Actualizar</button>
+    </div>
+    <p class="mensaje-password" [class.exito]="mensajePassword.includes('correctamente')" *ngIf="mensajePassword">{{ mensajePassword }}</p>
+  </section>
+</div>

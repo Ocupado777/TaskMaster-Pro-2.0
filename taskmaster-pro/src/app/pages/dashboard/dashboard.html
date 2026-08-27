@@ -1,0 +1,34 @@
+<div class="dashboard-container">
+	<header class="dashboard-hero">
+		<div>
+			<span class="eyebrow">Panel de control</span>
+			<h1>Buenos días, {{ usuario?.nombre || 'productivo' }}.</h1>
+			<p>Un vistazo claro a tu energía y a lo que merece atención hoy.</p>
+		</div>
+		<a routerLink="/tareas" class="hero-action">+ Nueva tarea</a>
+	</header>
+
+	<section class="metric-grid">
+		<article><span>En progreso</span><strong>{{ pendientes.length }}</strong><small>tareas pendientes</small></article>
+		<article><span>Completadas</span><strong>{{ completadas.length }}</strong><small>objetivos logrados</small></article>
+		<article><span>Ritmo actual</span><strong>{{ progreso }}%</strong><small>de avance total</small></article>
+	</section>
+
+	<section class="alert-strip" *ngIf="alertas.length">
+		<div class="alert-strip-title"><span class="alert-icon">!</span><div><strong>Atención requerida</strong><small>Tienes {{ alertas.length }} {{ alertas.length === 1 ? 'tarea que necesita' : 'tareas que necesitan' }} tu atención.</small></div></div>
+		<a routerLink="/recordatorios">Revisar alertas →</a>
+	</section>
+
+	<p class="disciplina"><span>✦</span> “La disciplina de hoy es la libertad de mañana.”</p>
+	<section class="dashboard-columns">
+		<article class="focus-card">
+			<div class="card-heading"><div><span class="eyebrow">Tu foco</span><h2>Lo que sigue</h2></div><a routerLink="/tareas">Ver todo</a></div>
+			<div class="task-preview" *ngFor="let tarea of pendientes | slice:0:4">
+				<span class="task-dot" [class.high]="tarea.prioridad === 'Alta'"></span>
+				<div><strong>{{ tarea.titulo }}</strong><small>{{ tarea.fechaLimite || 'Sin fecha' }} · {{ tarea.prioridad }}</small></div>
+			</div>
+			<p class="empty-state" *ngIf="pendientes.length === 0">Tu bandeja está despejada. Crea una tarea para comenzar.</p>
+		</article>
+		<article class="quote-card"><span>✦</span><h2>La claridad también es productividad.</h2><p>Elige una cosa importante y dale un espacio real en tu día.</p><a routerLink="/calendario">Abrir agenda →</a></article>
+	</section>
+</div>

@@ -1,0 +1,65 @@
+<div class="chat-container">
+  <div class="header-seccion">
+    <h2>Chat en vivo</h2>
+    <p>Conecta con personas de TaskMaster usando su nombre de usuario.</p>
+  </div>
+
+  <div class="chat-layout">
+    <aside class="chat-sidebar">
+      <div class="buscar-persona">
+        <label for="buscar-persona">Agregar persona</label>
+        <div class="buscar-fila">
+          <input id="buscar-persona" [(ngModel)]="nombreBusqueda" (keyup.enter)="buscarUsuario()" placeholder="nombre_de_usuario" />
+          <button type="button" (click)="buscarUsuario()" aria-label="Enviar solicitud">+</button>
+        </div>
+        <small *ngIf="mensajeEstado">{{ mensajeEstado }}</small>
+      </div>
+
+      <div class="solicitudes" *ngIf="solicitudes.length">
+        <h3>Solicitudes recibidas</h3>
+        <div class="solicitud" *ngFor="let solicitud of solicitudes">
+          <div><strong>@{{ solicitud.emisor }}</strong><span>Quiere conectar contigo</span></div>
+          <div class="solicitud-acciones">
+            <button type="button" class="aceptar" (click)="responderSolicitud(solicitud, 'aceptada')">Aceptar</button>
+            <button type="button" class="rechazar" (click)="responderSolicitud(solicitud, 'rechazada')" aria-label="Rechazar solicitud">×</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="solicitudes-enviadas" *ngIf="solicitudesEnviadas.length">
+        <strong>Solicitudes enviadas</strong>
+        <span *ngFor="let solicitud of solicitudesEnviadas">Esperando respuesta de @{{ solicitud.receptor }}</span>
+      </div>
+
+      <h3 class="titulo-contactos">Conversaciones</h3>
+      <button type="button" class="contacto" *ngFor="let contacto of contactosFiltrados" [class.activo]="contactoActivo?.usuario === contacto.usuario" (click)="seleccionarContacto(contacto)">
+        <span class="avatar">{{ contacto.nombre.charAt(0).toUpperCase() }}</span>
+        <span><strong>{{ contacto.nombre }}</strong><small>@{{ contacto.usuario }}</small></span>
+      </button>
+      <p class="sin-contactos" *ngIf="!contactosFiltrados.length">Aún no tienes contactos.</p>
+    </aside>
+
+    <section class="conversacion" *ngIf="contactoActivo; else bienvenida">
+      <header class="conversacion-header">
+        <span class="avatar">{{ contactoActivo.nombre.charAt(0).toUpperCase() }}</span>
+        <div><strong>{{ contactoActivo.nombre }}</strong><small>@{{ contactoActivo.usuario }}</small></div>
+        <span class="estado-en-linea">En contacto</span>
+      </header>
+      <div class="mensajes" #listaMensajes>
+        <p class="sin-mensajes" *ngIf="!mensajes.length">Escribe el primer mensaje.</p>
+        <div class="mensaje" *ngFor="let mensaje of mensajes" [class.mio]="mensaje.emisor === usuarioActual">
+          <span>{{ mensaje.texto }}</span>
+          <small>{{ mensaje.fecha | date:'HH:mm' }}</small>
+        </div>
+      </div>
+      <form class="compositor" (ngSubmit)="enviarMensaje()">
+        <input [(ngModel)]="textoMensaje" name="textoMensaje" placeholder="Escribe un mensaje..." autocomplete="off" />
+        <button type="submit" aria-label="Enviar mensaje">Enviar</button>
+      </form>
+    </section>
+
+    <ng-template #bienvenida>
+      <section class="bienvenida-chat"><span class="burbuja">•••</span><h3>Elige una conversación</h3><p>Agrega a otra persona por su nombre de usuario para comenzar.</p></section>
+    </ng-template>
+  </div>
+</div>
