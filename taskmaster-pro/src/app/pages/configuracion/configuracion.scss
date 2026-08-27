@@ -1,0 +1,207 @@
+.config-container {
+  padding: 30px;
+  font-family: sans-serif;
+  color: #333;
+
+  .header-seccion {
+    margin-bottom: 25px;
+    h2 { font-size: 1.8rem; color: #2e7d32; margin-bottom: 5px; }
+    p { color: #666; font-size: 0.95rem; }
+  }
+
+  .titulo-premium { color: #9b7714 !important; }
+
+  .premium-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0 10px;
+    padding: 14px;
+    color: #fff;
+    background: linear-gradient(110deg, #171717, #302712);
+    border: 1px solid #c9a227;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(143, 109, 11, .16);
+
+    .premium-emblem { color: #e7c34d; font-size: 22px; }
+    strong, span { display: block; }
+    strong { color: #f4d878; font: 600 0.95rem Georgia, serif; }
+    div span { margin-top: 3px; color: #d5d0c2; font: 0.76rem Arial, sans-serif; }
+    .premium-status { margin-left: auto; color: #f4d878; font: bold 0.62rem Arial, sans-serif; letter-spacing: 1px; }
+  }
+
+  .config-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+
+    .config-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+      border: 1px solid #eaeaea;
+
+      h3 {
+        font-size: 1.15rem;
+        color: #b78103;
+        margin-top: 0;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #f0f0f0;
+        padding-bottom: 10px;
+      }
+
+      .opcion-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid #f9f9f9;
+
+        &.vertical {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+        }
+
+        &.peligro {
+          border-bottom: none;
+          margin-top: 10px;
+        }
+
+        div {
+          display: flex;
+          flex-direction: column;
+          .titulo-opcion { font-weight: bold; font-size: 0.95rem; color: #222; }
+          .desc-opcion { font-size: 0.82rem; color: #777; margin-top: 2px; }
+        }
+
+        .select-config {
+          padding: 8px 12px;
+          border: 1px solid #ddd;
+          border-radius: 6px;
+          background: #fff;
+          font-size: 0.9rem;
+        }
+
+        .btn-peligro {
+          background: #ffebee;
+          color: #c62828;
+          border: 1px solid #ffcdd2;
+          padding: 8px 16px;
+          border-radius: 6px;
+          font-weight: bold;
+          cursor: pointer;
+          &:hover { background: #ffcdd2; }
+        }
+
+        /* Paleta de colores */
+        .paleta-colores {
+          display: flex;
+          gap: 12px;
+          margin-top: 5px;
+
+          button {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: transform 0.2s;
+
+            &:hover { transform: scale(1.1); }
+            &.activo {
+              border-color: #333;
+              transform: scale(1.15);
+              box-shadow: 0 0 8px rgba(0,0,0,0.2);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .footer-acciones {
+    display: flex;
+    justify-content: flex-end;
+
+    .btn-guardar-principal {
+      padding: 12px 30px;
+      background: #2e7d32;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2);
+      &:hover { background: #1b5e20; }
+    }
+  }
+
+  /* Estilos para Switch Toggle */
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+
+    input { opacity: 0; width: 0; height: 0; }
+
+    .slider {
+      position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #ccc; transition: .4s; border-radius: 34px;
+      &:before {
+        position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px;
+        background-color: white; transition: .4s; border-radius: 50%;
+      }
+    }
+
+    input:checked + .slider { background-color: #2e7d32; }
+    .premium-switch input:checked + .slider { background-color: #c9a227; }
+    input:checked + .slider:before { transform: translateX(24px); }
+  }
+
+  /* MODAL DE CONFIRMACIÓN */
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+
+    .modal-confirmacion {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      width: 400px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+
+      h3 { color: #c62828; font-size: 1.2rem; margin-bottom: 10px; }
+      p { color: #666; font-size: 0.9rem; margin-bottom: 20px; }
+      .confirmacion-acciones {
+        display: flex; gap: 10px;
+        button { flex: 1; padding: 10px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        .btn-rojo { background: #f44336; color: #fff; &:hover { background: #d32f2f; } }
+        .btn-gris { background: #e0e0e0; color: #333; &:hover { background: #d5d5d5; } }
+      }
+    }
+  }
+
+  .toast-flotante {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: #111;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 1100;
+  }
+}
