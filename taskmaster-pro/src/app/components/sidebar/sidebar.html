@@ -1,0 +1,22 @@
+<aside class="sidebar">
+  <div class="brand"><img src="taskmaster-logo.svg" alt="Taskmaster" /><div><strong>TaskMaster</strong><small>Pro workspace</small></div></div>
+  <p class="section-label">Organiza</p>
+  <nav>
+    <a routerLink="/dashboard" routerLinkActive="active">⌂ <span>Resumen</span></a>
+    <a routerLink="/tareas" routerLinkActive="active">✓ <span>Mis tareas</span></a>
+    <a routerLink="/calendario" routerLinkActive="active">□ <span>Calendario</span></a>
+    <a routerLink="/estadisticas" routerLinkActive="active">◒ <span>Estadísticas</span></a>
+    <a routerLink="/prioridades" routerLinkActive="active">! <span>Prioridades</span></a>
+    <a routerLink="/recordatorios" routerLinkActive="active">• <span>Recordatorios</span><b class="alert-badge" *ngIf="alertas.length">{{ alertas.length }}</b></a>
+    <a routerLink="/chat" routerLinkActive="active">◌ <span>Chat en vivo</span><b class="alert-badge chat-badge" *ngIf="solicitudesChat">{{ solicitudesChat }}</b></a>
+  </nav>
+  <p class="section-label">Cuenta</p>
+  <nav>
+    <a routerLink="/perfil" routerLinkActive="active">○ <span>Mi perfil</span></a>
+    <a routerLink="/configuracion" routerLinkActive="active">⚙ <span>Configuración</span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <button class="theme-button" (click)="dataService.cambiarTema()">{{ dataService.tema() === 'light' ? '☾' : '☀' }} <span>{{ dataService.tema() === 'light' ? 'Modo oscuro' : 'Modo claro' }}</span></button>
+    <button class="logout-button" (click)="cerrarSesion()">↪ <span>Cerrar sesión</span></button>
+  </div>
+</aside>

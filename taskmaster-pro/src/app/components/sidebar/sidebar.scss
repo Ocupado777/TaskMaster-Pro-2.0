@@ -1,0 +1,19 @@
+.sidebar {
+	position: fixed; inset: 0 auto 0 0; z-index: 5; width: 248px; padding: 28px 18px;
+	background: var(--surface); border-right: 1px solid var(--line); display: flex; flex-direction: column;
+	color: var(--ink);
+}
+.brand { display: flex; gap: 11px; align-items: center; margin: 0 8px 42px; }
+.brand img { display: block; width: 42px; height: 42px; object-fit: contain; }
+.brand strong, .brand small { display: block; }
+.brand strong { font-size: 18px; }
+.brand small { margin-top: 3px; color: var(--muted); font: 11px Arial, sans-serif; letter-spacing: 1px; }
+.section-label { margin: 0 10px 9px; color: var(--muted); font: 10px Arial, sans-serif; text-transform: uppercase; letter-spacing: 1.5px; }
+nav { display: grid; gap: 4px; margin-bottom: 27px; }
+nav a, .theme-button, .logout-button { display: flex; align-items: center; gap: 13px; width: 100%; padding: 11px 12px; color: var(--muted); background: none; border: 0; border-radius: 9px; text-align: left; text-decoration: none; cursor: pointer; font: 14px Arial, sans-serif; }
+nav a:first-letter { color: var(--accent); font-size: 19px; }
+nav a:hover, nav a.active, .theme-button:hover { color: var(--accent-strong); background: var(--accent-soft); }
+.alert-badge { margin-left: auto; display: grid; place-items: center; min-width: 20px; height: 20px; padding: 0 5px; color: white; background: #c86d5d; border-radius: 10px; font: bold 11px Arial, sans-serif; }
+.sidebar-footer { margin-top: auto; display: grid; gap: 6px; }
+.logout-button { color: var(--danger); }
+@media (max-width: 760px) { .sidebar { inset: 0 0 auto; width: 100%; height: 66px; padding: 13px 18px; flex-direction: row; align-items: center; } .brand { margin: 0; } .brand small, .sidebar nav, .section-label, .sidebar-footer { display: none; } }

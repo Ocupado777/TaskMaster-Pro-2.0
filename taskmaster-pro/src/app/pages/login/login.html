@@ -1,0 +1,17 @@
+<div class="login-container">
+  <div class="login-card">
+    <img class="brand-logo" src="taskmaster-logo.svg" alt="Taskmaster" />
+    <span class="eyebrow">TaskMaster Pro</span>
+    <h1>Tu trabajo, con intención.</h1>
+    <p>Inicia sesión para recuperar tu ritmo y ver lo que sigue.</p>
+    <form (ngSubmit)="onLogin()">
+      <label for="email">Correo electrónico</label>
+      <input id="email" type="email" [(ngModel)]="email" name="email" placeholder="tu@correo.com" required />
+      <label for="password">Contraseña</label>
+      <input id="password" type="password" [(ngModel)]="password" name="password" placeholder="Tu contraseña" required />
+      <p class="mensaje" *ngIf="mensaje">{{ mensaje }}</p>
+      <button type="submit">Entrar al espacio de trabajo</button>
+    </form>
+    <p class="auth-link">¿Aún no tienes una cuenta? <a routerLink="/register">Crear cuenta</a></p>
+  </div>
+</div>
