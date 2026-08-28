@@ -1,0 +1,198 @@
+<div class="tareas-container">
+  <div class="header-seccion">
+    <h2>Mis Tareas</h2>
+    <p>Gestiona, organiza y completa tus tareas pendientes.</p>
+  </div>
+
+  <!-- Barra de Filtros y Acciones -->
+  <div class="acciones-barra">
+    <input 
+      type="text" 
+      placeholder="Buscar tarea..." 
+      [(ngModel)]="busqueda" 
+      class="input-buscar"
+    />
+
+    <select [(ngModel)]="filtroPrioridad" class="select-filtro">
+      <option value="Todas">Todas las prioridades</option>
+      <option value="Alta">Alta</option>
+      <option value="Media">Media</option>
+      <option value="Baja">Baja</option>
+    </select>
+
+    <select [(ngModel)]="filtroEstado" class="select-filtro">
+      <option value="Todos">Todos los estados</option>
+      <option value="Pendiente">Pendiente</option>
+      <option value="Completada">Completada</option>
+    </select>
+
+    <button (click)="abrirModalNuevo()" class="btn-nuevo">+ Nueva Tarea</button>
+  </div>
+
+  <!-- Tabla de Tareas -->
+  <div class="tabla-card">
+    <table>
+      <thead>
+        <tr>
+          <th>Tarea</th>
+          <th>Prioridad</th>
+          <th>Estado</th>
+          <th>Fecha límite</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let t of tareasFiltradas">
+          <td class="col-titulo">{{ t.titulo }}</td>
+          <td>
+            <span class="badge" [ngClass]="'prioridad-' + t.prioridad.toLowerCase()">
+              {{ t.prioridad }}
+            </span>
+          </td>
+          <td>
+            <span class="badge" [ngClass]="'estado-' + t.estado.toLowerCase()">
+              {{ t.estado }}
+            </span>
+          </td>
+          <td>{{ t.fechaLimite }} {{ t.horaLimite }}</td>
+          <td class="acciones-btns">
+            <button (click)="abrirDetalle(t)" class="btn-accion detalle" title="Ver detalle" aria-label="Ver detalle">◉</button>
+            <button (click)="abrirModalEditar(t)" class="btn-accion editar" title="Editar">✏️</button>
+            <button (click)="confirmarEliminar(t)" class="btn-accion eliminar" title="Eliminar">🗑️</button>
+          </td>
+        </tr>
+        <tr *ngIf="tareasFiltradas.length === 0">
+          <td colspan="5" class="sin-resultados">No se encontraron tareas registradas.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- MODAL: CREAR / EDITAR TAREA -->
+  <div class="modal-overlay" *ngIf="mostrarModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>{{ modoEdicion ? 'Editar Tarea' : 'Nueva Tarea' }}</h3>
+        <button class="btn-cerrar" (click)="cerrarModal()">×</button>
+      </div>
+
+      <div class="modal-body">
+        <label>Título</label>
+        <input type="text" [(ngModel)]="tareaActual.titulo" placeholder="Título de la tarea" />
+
+        <label>Descripción</label>
+        <textarea [(ngModel)]="tareaActual.descripcion" placeholder="Detalles adicionales..."></textarea>
+
+        <div class="form-row">
+          <div>
+            <label>Prioridad</label>
+            <select [(ngModel)]="tareaActual.prioridad">
+              <option value="Alta">Alta</option>
+              <option value="Media">Media</option>
+              <option value="Baja">Baja</option>
+            </select>
+          </div>
+          <div>
+            <label>Estado</label>
+            <select [(ngModel)]="tareaActual.estado">
+              <option value="Pendiente">Pendiente</option>
+              <option value="Completada">Completada</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div>
+            <label>Fecha límite</label>
+            <input type="date" [(ngModel)]="tareaActual.fechaLimite" />
+          </div>
+          <div>
+            <label>Hora límite</label>
+            <input type="time" [(ngModel)]="tareaActual.horaLimite" />
+          </div>
+        </div>
+
+        <label>Subtareas</label>
+        <div class="subtarea-input-grupo">
+          <input type="text" [(ngModel)]="nuevaSubtareaTexto" placeholder="Nueva subtarea" />
+          <button (click)="agregarSubtarea()" class="btn-add-sub">+</button>
+        </div>
+
+        <ul class="lista-subtareas">
+          <li *ngFor="let sub of tareaActual.subtareas; let i = index">
+            <label>
+              <input type="checkbox" [(ngModel)]="sub.completada" />
+              <span [class.tachado]="sub.completada">{{ sub.texto }}</span>
+            </label>
+            <button (click)="eliminarSubtarea(i)" class="btn-del-sub">×</button>
+          </li>
+        </ul>
+      </div>
+
+      <div class="modal-footer">
+        <button (click)="guardarTarea()" class="btn-guardar-modal">Guardar tarea</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: DETALLE Y PROGRESO DE TAREA -->
+  <div class="modal-overlay" *ngIf="mostrarDetalle && tareaDetalle">
+    <div class="modal-card detalle-card">
+      <div class="modal-header">
+        <div>
+          <span class="detalle-etiqueta">DETALLE DE TAREA</span>
+          <h3>{{ tareaDetalle.titulo }}</h3>
+        </div>
+        <button class="btn-cerrar" (click)="cerrarDetalle()" aria-label="Cerrar detalle">×</button>
+      </div>
+
+      <div class="modal-body detalle-body">
+        <div class="detalle-meta">
+          <span class="badge" [ngClass]="'prioridad-' + tareaDetalle.prioridad.toLowerCase()">{{ tareaDetalle.prioridad }}</span>
+          <span class="badge" [ngClass]="'estado-' + tareaDetalle.estado.toLowerCase()">{{ tareaDetalle.estado }}</span>
+          <span *ngIf="tareaDetalle.fechaLimite">Entrega: {{ tareaDetalle.fechaLimite }} {{ tareaDetalle.horaLimite }}</span>
+        </div>
+
+        <p class="detalle-descripcion" *ngIf="tareaDetalle.descripcion">{{ tareaDetalle.descripcion }}</p>
+
+        <div class="detalle-subtareas" *ngIf="tareaDetalle.subtareas.length > 0; else sinSubtareas">
+          <div class="detalle-seccion-titulo">
+            <strong>Subtareas</strong>
+            <span>{{ contarSubtareasCompletadas(tareaDetalle) }}/{{ tareaDetalle.subtareas.length }} completadas</span>
+          </div>
+          <label class="check-detalle" *ngFor="let sub of tareaDetalle.subtareas">
+            <input type="checkbox" [(ngModel)]="sub.completada" (ngModelChange)="cambiarSubtarea(sub)" />
+            <span [class.tachado]="sub.completada">{{ sub.texto }}</span>
+          </label>
+        </div>
+        <ng-template #sinSubtareas>
+          <div class="sin-subtareas">Esta tarea no tiene subtareas. Puedes marcarla como completada directamente.</div>
+        </ng-template>
+      </div>
+
+      <div class="modal-footer detalle-footer">
+        <button (click)="abrirModalEditar(tareaDetalle!)" class="btn-secundario-detalle">Editar tarea</button>
+        <button (click)="completarTarea(tareaDetalle!)" class="btn-completar-detalle" [disabled]="tareaDetalle.estado === 'Completada'">
+          {{ tareaDetalle.estado === 'Completada' ? 'Tarea completada' : 'Marcar como completada' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE CONFIRMACIÓN: ELIMINAR -->
+  <div class="modal-overlay" *ngIf="mostrarModalEliminar">
+    <div class="modal-confirmacion">
+      <h3>¿Eliminar la tarea "{{ tareaAEliminar?.titulo }}"?</h3>
+      <p>Esta acción no se puede deshacer.</p>
+      <div class="confirmacion-acciones">
+        <button (click)="ejecutarEliminacion()" class="btn-rojo">Eliminar</button>
+        <button (click)="cancelarEliminacion()" class="btn-gris">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICACIÓN FLOTANTE -->
+  <div class="toast-flotante" *ngIf="mensajeToast">
+    {{ mensajeToast }}
+  </div>
+</div>

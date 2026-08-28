@@ -1,0 +1,89 @@
+.estadisticas-container {
+  padding: 30px;
+  font-family: sans-serif;
+  color: #333;
+
+  h2 {
+    margin-bottom: 25px;
+  }
+
+  .header-seccion p { color: var(--muted); font: 14px Arial, sans-serif; }
+
+  .cards-grid {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+
+    .card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      width: 160px;
+      border-left: 5px solid #007bff;
+
+      &.completadas {
+        border-left-color: #28a745;
+      }
+
+      &.pendientes {
+        border-left-color: #ffc107;
+      }
+
+      h3 {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 10px;
+      }
+
+      .numero {
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin: 0;
+        color: #222;
+      }
+    }
+  }
+
+  .progreso-section {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    width: 520px;
+
+    h3 {
+      font-size: 1rem;
+      margin-bottom: 15px;
+      color: #555;
+    }
+
+    .barra-exterior {
+      width: 100%;
+      height: 12px;
+      background-color: #e9ecef;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 10px;
+
+      .barra-interior {
+        height: 100%;
+        background-color: #28a745;
+        transition: width 0.4s ease-in-out;
+      }
+    }
+
+    .porcentaje-texto {
+      font-size: 0.9rem;
+      color: #666;
+      font-weight: bold;
+      text-align: right;
+      margin: 0;
+    }
+  }
+}
+
+.eyebrow { color: var(--accent); font: bold 11px Arial, sans-serif; letter-spacing: 1.8px; text-transform: uppercase; }
+.estadisticas-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; max-width: 980px; margin-top: 18px; }
+.distribucion-card, .proximas-card { padding: 25px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }.section-heading { display: flex; justify-content: space-between; align-items: start; margin-bottom: 22px; }.section-heading h3 { margin: 7px 0 0; font-size: 23px; font-weight: 400; }.section-heading > span { color: var(--muted); font: 12px Arial, sans-serif; }.priority-row { display: grid; grid-template-columns: 90px 30px 1fr; align-items: center; gap: 12px; margin: 18px 0; font: 13px Arial, sans-serif; }.priority-row span { display: flex; align-items: center; gap: 8px; }.priority-row strong { font-size: 15px; }.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; }.dot.alta { background: #c86d5d; }.dot.media { background: #d5a946; }.dot.baja { background: var(--accent); }.mini-bar { height: 7px; overflow: hidden; background: var(--surface-soft); border-radius: 5px; }.mini-bar b { display: block; height: 100%; background: var(--accent); border-radius: inherit; }.proxima-item { display: flex; align-items: center; gap: 12px; padding: 13px 0; border-top: 1px solid var(--line); }.calendar-mark { display: grid; place-items: center; width: 35px; height: 35px; color: var(--accent-strong); background: var(--accent-soft); border-radius: 8px; font-weight: bold; }.proxima-item strong, .proxima-item small { display: block; }.proxima-item strong { margin-bottom: 4px; font-size: 14px; }.proxima-item small { color: var(--muted); font: 11px Arial, sans-serif; }.empty-state { color: var(--muted); font: 13px Arial, sans-serif; }
+@media (max-width: 760px) { .estadisticas-grid { grid-template-columns: 1fr; }.cards-grid { flex-wrap: wrap; } }

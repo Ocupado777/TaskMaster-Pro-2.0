@@ -1,0 +1,64 @@
+<div class="calendario-container">
+  <div class="header-seccion">
+    <h2>Calendario de Tareas</h2>
+    <p>Organiza tu mes y consulta las actividades programadas día a día.</p>
+  </div>
+
+  <div class="calendario-layout">
+    <!-- Cuadrícula del Mes -->
+    <div class="calendario-grid-card">
+      <div class="mes-navegacion">
+        <h3>{{ mesActual }}</h3>
+        <div class="calendario-controles"><button (click)="irAHoy()">Hoy</button><label><input type="checkbox" [(ngModel)]="soloPendientes" /> Solo pendientes</label></div>
+      </div>
+
+      <div class="dias-semana-header">
+        <span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
+      </div>
+
+      <div class="dias-grid">
+        <div 
+          *ngFor="let dia of diasMes" 
+          class="dia-celda"
+          [class.seleccionado]="diaSeleccionado === dia"
+          [class.tiene-tareas]="tareasPorDia[dia]?.length > 0"
+          (click)="seleccionarDia(dia)"
+        >
+          <span class="numero-dia">{{ dia }}</span>
+          <span class="punto-indicador" *ngIf="tareasPorDia[dia]?.length > 0"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel Lateral: Tareas del Día Seleccionado -->
+    <div class="panel-dia-card">
+      <h3>Agenda para el {{ diaSeleccionado }} de {{ mesActual }}</h3>
+      <div class="crear-desde-calendario">
+        <input [(ngModel)]="nuevaTareaTitulo" placeholder="Crear tarea para este día" (keyup.enter)="crearTarea()" />
+        <div class="crear-fila"><input type="time" [(ngModel)]="nuevaTareaHora" /><select [(ngModel)]="nuevaTareaPrioridad"><option>Alta</option><option>Media</option><option>Baja</option></select><button (click)="crearTarea()">Añadir</button></div>
+      </div>
+      
+      <div class="lista-tareas-dia" *ngIf="tareasDelDiaSeleccionado.length > 0; else sinTareas">
+        <div class="tarea-item-card" *ngFor="let t of tareasDelDiaSeleccionado" [class.completada]="t.estado === 'Completada'">
+          <div class="info-tarea">
+            <label>
+              <input type="checkbox" [checked]="t.estado === 'Completada'" (change)="cambiarEstadoTarea(t)" />
+              <span class="titulo">{{ t.titulo }}</span>
+            </label>
+            <span class="hora">{{ t.horaLimite || 'Sin hora' }}</span>
+          </div>
+          <span class="badge" [ngClass]="'prioridad-' + t.prioridad.toLowerCase()">
+            {{ t.prioridad }}
+          </span>
+          <button class="eliminar-tarea" (click)="eliminarTarea(t)" title="Eliminar tarea">×</button>
+        </div>
+      </div>
+
+      <ng-template #sinTareas>
+        <div class="sin-tareas-mensaje">
+          <p>No hay tareas programadas para este día.</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
